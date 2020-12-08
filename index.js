@@ -235,7 +235,7 @@ HttpPushRgb.prototype = {
 
             case 'Light':
                 this.log('Creating Lightbulb');
-                this.service = new Service.Lightbulb(this.name); 
+                this.service = new Service.Lightbulb(this.name);
 
                 if (this.switch.status) {
                     this.service
