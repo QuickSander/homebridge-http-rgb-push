@@ -224,8 +224,8 @@ HttpPushRgb.prototype = {
 
                 // Handle fanspeed
                 if (this.has.brightness) {
-                        this.log('... adding fanspeed');
-                        this.service
+                    this.log('... adding fanspeed');
+                    this.service
                         .addCharacteristic(new Characteristic.RotationSpeed())
                         .on('get', this.getBrightness.bind(this))
                         .on('set', this.setBrightness.bind(this));
@@ -250,8 +250,8 @@ HttpPushRgb.prototype = {
 
                 // Handle brightness
                 if (this.has.brightness) {
-                        this.log('... adding brightness');
-                        this.service
+                    this.log('... adding brightness');
+                    this.service
                         .addCharacteristic(new Characteristic.Brightness())
                         .on('get', this.getBrightness.bind(this))
                         .on('set', this.setBrightness.bind(this));
