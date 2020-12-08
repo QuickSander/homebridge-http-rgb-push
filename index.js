@@ -207,9 +207,35 @@ HttpPushRgb.prototype = {
             .setCharacteristic(Characteristic.FirmwareRevision, FIRMWARE_REVISION);
 
         switch (this.serviceCategory) {
+            case 'Fan':
+                this.log('Creating Fan');
+                this.service = new Service.Fan(this.name);
+
+                if (this.switch.status) {
+                    this.service
+                        .getCharacteristic(Characteristic.On)
+                        .on('get', this.getPowerState.bind(this))
+                        .on('set', this.setPowerState.bind(this));
+                } else {
+                    this.service
+                        .getCharacteristic(Characteristic.On)
+                        .on('set', this.setPowerState.bind(this));
+                }
+
+                // Handle fanspeed
+                if (this.has.brightness) {
+                        this.log('... adding fanspeed');
+                        this.service
+                        .addCharacteristic(new Characteristic.RotationSpeed())
+                        .on('get', this.getBrightness.bind(this))
+                        .on('set', this.setBrightness.bind(this));
+                }
+
+                return [informationService, this.service];
+
             case 'Light':
                 this.log('Creating Lightbulb');
-                this.service = new Service.Lightbulb(this.name);
+                this.service = new Service.Lightbulb(this.name); 
 
                 if (this.switch.status) {
                     this.service
@@ -224,12 +250,13 @@ HttpPushRgb.prototype = {
 
                 // Handle brightness
                 if (this.has.brightness) {
-                    this.log('... adding brightness');
-                    this.service
+                        this.log('... adding brightness');
+                        this.service
                         .addCharacteristic(new Characteristic.Brightness())
                         .on('get', this.getBrightness.bind(this))
                         .on('set', this.setBrightness.bind(this));
                 }
+
                 // Handle color
                 if (this.color) {
                     this.log('... adding color');
